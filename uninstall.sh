@@ -1,6 +1,12 @@
 #! /bin/bash
 set -eu
 
+ROOT="$(dirname "${0}")"
+
+source "${ROOT}"/globals
+
+! check_command grep virsh && exit 3
+
 LIBVIRT_DIR=${HOME}/.local/libvirt/images
 
 mkdir -p "${LIBVIRT_DIR}"

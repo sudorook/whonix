@@ -1,6 +1,12 @@
 #! /bin/bash
 set -euo pipefail
 
+ROOT="$(dirname "${0}")"
+
+source "${ROOT}"/globals
+
+! check_command curl sed virsh && exit 3
+
 function get_whonix_info {
   curl "${WHONIX_URL}" |
     sed -n '/.*href="https:\/\/download.whonix.org\/libvirt\/.*.libvirt.xz.*/{s/.*href="\(.*\.libvirt.xz\)".*/\1/p}' |
