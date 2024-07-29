@@ -31,6 +31,25 @@ function get_whonix_info {
     head -n 1
 }
 
+function check_all_files {
+  local file
+  local files=(
+    WHONIX_BINARY_LICENSE_AGREEMENT
+    WHONIX_DISCLAIMER
+    Whonix-Gateway-Xfce-"${WHONIX_VERSION}".Intel_AMD64.qcow2
+    Whonix-Workstation-Xfce-"${WHONIX_VERSION}".Intel_AMD64.qcow2
+    Whonix-Gateway.xml
+    Whonix-Workstation.xml
+    Whonix_external_network.xml
+    Whonix_internal_network.xml)
+  for file in "${files[@]}"; do
+    if ! [ -f "${file}" ]; then
+      echo "${file@Q} missing. Exiting."
+      return 1
+    fi
+  done
+}
+
 WHONIX_URL="https://www.whonix.org/wiki/KVM"
 DOWNLOAD_URL="$(get_whonix_info)"
 WHONIX_VERSION="$(echo "${DOWNLOAD_URL}" | cut -d "/" -f 5)"
@@ -45,6 +64,11 @@ curl -L# "${DOWNLOAD_URL}" -o "${WHONIX_ARCHIVE}"
 
 tar xf "${WHONIX_ARCHIVE}"
 sync
+
+if ! check_all_files; then
+  exit 3
+fi
+
 rm -vf WHONIX_BINARY_LICENSE_AGREEMENT WHONIX_DISCLAIMER
 
 mv -vf \
