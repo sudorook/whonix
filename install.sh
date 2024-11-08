@@ -60,7 +60,7 @@ LIBVIRT_DIR=${HOME}/.local/libvirt/images
 mkdir -p "${LIBVIRT_DIR}"
 pushd "${LIBVIRT_DIR}" > /dev/null
 
-curl -L# "${DOWNLOAD_URL}" -o "${WHONIX_ARCHIVE}"
+curl -L# -o "${WHONIX_ARCHIVE}" -C - "${DOWNLOAD_URL}"
 
 tar xf "${WHONIX_ARCHIVE}"
 sync
